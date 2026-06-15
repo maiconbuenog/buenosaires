@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foz & Buenos Aires · julho 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Inter:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1C1C1A;--ink2:#4A4A47;--ink3:#8A8A86;--line:rgba(0,0,0,.09);--bg:#F8F7F4;--w:#fff;--g:#2D6A4F;--gl:#EAF4EE;--gd:#1A5C38;--b:#1A4A8A;--bl:#E8EFF8;--bd:#1A3F7A;--al:#FDF3DC;--ad:#7A5500;--rl:#FAEAEA;--rd:#8B1A1A;--r:12px;--r2:18px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.hero{background:var(--ink);color:#fff;padding:1.75rem 1.25rem 1.5rem;position:sticky;top:0;z-index:100}
+.hero-eye{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(20px,5vw,28px);font-weight:400;line-height:1.1}
+.hero h1 em{font-style:italic;color:#9FD8BF}
+.hero-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chip{font-size:11px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);padding:3px 10px;border-radius:99px}
+.prog-wrap{display:flex;align-items:center;gap:10px;margin-top:12px}
+.prog-track{flex:1;height:3px;background:rgba(255,255,255,.12);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:#9FD8BF;border-radius:99px;width:0%;transition:width .5s}
+.prog-pct{font-size:11px;color:rgba(255,255,255,.35);min-width:30px}
+.tabs{background:#fff;border-bottom:1px solid var(--line);display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:104px;z-index:80}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:12px 13px;font-size:11px;font-weight:500;color:var(--ink3);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;transition:color .15s,border-color .15s}
+.tab:hover{color:var(--ink)}.tab.on{color:var(--ink);border-bottom-color:var(--ink)}
+.pip{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle;position:relative;top:-1px}
+.pg{display:none;max-width:680px;margin:0 auto;padding:1.25rem 1rem 5rem}.pg.on{display:block}
+.dh{margin-bottom:1.25rem}
+.dh-eye{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.dh-h1{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,26px);font-weight:400;line-height:1.15;margin-bottom:3px}
+.dh-h1 em{font-style:italic}
+.dh-sub{font-size:12px;color:var(--ink3)}
+/* PLACE */
+.place{background:#fff;border:1px solid var(--line);border-radius:var(--r2);margin-bottom:10px;overflow:hidden;transition:opacity .25s}
+.place.done{opacity:.4}
+.place-photo{width:100%;aspect-ratio:16/7;object-fit:cover;display:block;background:#e8e4dd}
+.place-body{padding:12px 14px}
+.place-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:5px}
+.place-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:400;line-height:1.2;flex:1}
+.chk{width:22px;height:22px;border-radius:50%;border:1.5px solid #ccc;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:transparent;flex-shrink:0;transition:all .2s}
+.chk.on{background:var(--g);border-color:var(--g);color:#fff}
+.place-meta{font-size:11px;color:var(--ink3);margin-bottom:5px}
+.place-desc{font-size:12px;color:var(--ink2);line-height:1.65}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.tag{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px}
+.t-free{background:var(--gl);color:var(--gd)}.t-paid{background:var(--bl);color:var(--bd)}
+.t-warn{background:var(--al);color:var(--ad)}.t-danger{background:var(--rl);color:var(--rd)}
+.t-gray{background:#F1EFE8;color:var(--ink3);border:1px solid var(--line)}
+.blk{margin-top:8px;padding:8px 11px;border-radius:9px;font-size:12px;line-height:1.6}
+.blk-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.65;display:block;margin-bottom:2px}
+.blk-tip{background:var(--gl);color:var(--gd)}.blk-warn{background:var(--al);color:var(--ad)}
+.blk-danger{background:var(--rl);color:var(--rd)}.blk-info{background:var(--bl);color:var(--bd)}
+.move{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--bd);padding:7px 10px;background:var(--bl);border-radius:8px;margin-top:8px}
+.period{margin-bottom:14px}
+.period-hdr{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.period-dot{width:7px;height:7px;border-radius:50%}
+.period-lbl{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.notes-w{padding:10px 14px;border-top:1px solid var(--line);background:var(--bg)}
+.notes-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:5px}
+textarea{width:100%;padding:7px 10px;font-size:12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-family:'Inter',sans-serif;resize:vertical;min-height:44px;line-height:1.5}
+textarea:focus{outline:none;border-color:var(--b)}
+.save-btn{margin-top:5px;font-size:11px;font-weight:500;padding:5px 12px;border-radius:7px;border:1px solid var(--line);background:none;color:var(--ink2);cursor:pointer;font-family:'Inter',sans-serif}
+/* OVERVIEW */
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:8px;margin-bottom:1.25rem}
+.ov-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:12px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.ov-card:hover{transform:translateY(-2px);box-shadow:0 5px 14px rgba(0,0,0,.07)}
+.ov-date{font-size:10px;color:var(--ink3);margin-bottom:3px;display:flex;align-items:center;gap:5px}
+.ov-dot{width:6px;height:6px;border-radius:50%}
+.ov-title{font-size:12px;font-weight:600;line-height:1.35}
+.ov-bar{height:2px;background:var(--line);border-radius:99px;margin-top:8px;overflow:hidden}
+.ov-fill{height:100%;background:var(--g);border-radius:99px;transition:width .4s}
+/* INFO / COST / LINKS / TODO */
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r2);padding:.9rem 1.1rem;margin-bottom:10px}
+.card h3{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px}
+.i-row{display:flex;gap:10px;font-size:12px;color:var(--ink2);padding:5px 0;border-bottom:1px solid var(--bg);align-items:flex-start}
+.i-row:last-child{border-bottom:none}
+.i-row .lbl{font-weight:600;color:var(--ink);min-width:90px;flex-shrink:0}
+table.ct{width:100%;border-collapse:collapse;font-size:12px}
+.ct th{font-size:10px;color:var(--ink3);font-weight:600;text-align:left;padding:0 4px 7px;border-bottom:1px solid var(--line)}
+.ct td{padding:7px 4px;border-bottom:1px solid var(--bg);color:var(--ink2);vertical-align:top}
+.ct td:first-child{color:var(--ink);font-weight:500}
+.ct td:last-child{text-align:right;font-weight:600;color:var(--ink);white-space:nowrap}
+.ct tr.tot td{border-top:2px solid var(--line);border-bottom:none;font-size:13px;font-weight:700}
+.ct tr.free td:last-child{color:var(--gd)}
+.ct tr.sep td{background:var(--bg);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);padding:8px 4px 4px;border-bottom:1px solid var(--line)}
+.l-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--bg);font-size:12px}
+.l-row:last-child{border-bottom:none}
+.l-a{color:var(--b);font-weight:600;text-decoration:none}.l-a:hover{text-decoration:underline}
+.badge-r{font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:var(--rl);color:var(--rd);margin-left:4px}
+.todo-item{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--bg);font-size:12px}
+.todo-item:last-child{border-bottom:none}
+.todo-chk{width:18px;height:18px;border:1.5px solid #ccc;border-radius:4px;flex-shrink:0;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:transparent;background:none;transition:all .2s}
+.todo-chk.on{background:var(--g);border-color:var(--g);color:#fff}
+.todo-name{font-weight:500;color:var(--ink);margin-bottom:1px}
+.todo-detail{font-size:11px;color:var(--ink3)}
+.urgency{font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;margin-left:6px}
+.urg-now{background:var(--rl);color:var(--rd)}
+.urg-soon{background:var(--al);color:var(--ad)}
+.urg-trip{background:var(--bl);color:var(--bd)}
+/* SCROLL TOP */
+#scrolltop{position:fixed;bottom:1.5rem;right:1.25rem;width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;border:none;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;z-index:200;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+#scrolltop.show{opacity:1}
+@media(max-width:480px){.pg{padding:1rem .9rem 5rem}.place-name{font-size:15px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-eye">Roteiro de viagem · 4 pessoas · julho 2026</div>
+  <h1>Foz &amp; <em>Buenos Aires</em></h1>
+  <div class="hero-chips">
+    <span class="chip">11–20 julho</span>
+    <span class="chip">Foz do Iguaçu</span>
+    <span class="chip">Palermo · Gorriti 3633</span>
+    <span class="chip">FO5103 · FO5102</span>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-track"><div class="prog-fill" id="gf"></div></div>
+    <div class="prog-pct" id="gp">0%</div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab on" data-t="ov">Visão Geral</button>
+  <button class="tab" data-t="d1"><span class="pip" style="background:#888"></span>11 jul</button>
+  <button class="tab" data-t="d2"><span class="pip" style="background:#2D6A4F"></span>12 jul</button>
+  <button class="tab" data-t="d3"><span class="pip" style="background:#2D6A4F"></span>13 jul</button>
+  <button class="tab" data-t="d4"><span class="pip" style="background:#888"></span>14 jul</button>
+  <button class="tab" data-t="d5"><span class="pip" style="background:#1A4A8A"></span>15 jul</button>
+  <button class="tab" data-t="d6"><span class="pip" style="background:#1A4A8A"></span>16 jul</button>
+  <button class="tab" data-t="d7"><span class="pip" style="background:#2D6A4F"></span>17 jul</button>
+  <button class="tab" data-t="d8"><span class="pip" style="background:#1A4A8A"></span>18 jul</button>
+  <button class="tab" data-t="d9"><span class="pip" style="background:#2D6A4F"></span>19 jul</button>
+  <button class="tab" data-t="d10"><span class="pip" style="background:#1A4A8A"></span>20 jul</button>
+  <button class="tab" data-t="d11"><span class="pip" style="background:#888"></span>21 jul</button>
+  <button class="tab" data-t="gastos">💰 Gastos</button>
+  <button class="tab" data-t="links">🔗 Links</button>
+  <button class="tab" data-t="todo">✅ Antes de ir</button>
+</nav>
+
+<!-- OVERVIEW -->
+<div class="pg on" id="pg-ov">
+  <div class="dh"><div class="dh-eye">Julho 2026 · Três países</div><div class="dh-h1">11 dias, <em>três países</em></div><div class="dh-sub">Brasil · Paraguai · Argentina · Uruguai</div></div>
+  <div class="ov-grid" id="ov-grid"></div>
+  <div class="card"><h3>Hospedagens</h3>
+    <div class="i-row"><span class="lbl">Foz (11–14 jul)</span>Av. dos Imigrantes, 522 Apto 204 · piscina</div>
+    <div class="i-row"><span class="lbl">Buenos Aires</span>Gorriti 3633, Palermo C1174</div>
+  </div>
+  <div class="card"><h3>Voos</h3>
+    <div class="i-row"><span class="lbl">14 jul · 21h40</span>IGR → EZE · FO5103 · Direto 1h55 · Chega 23h35</div>
+    <div class="i-row"><span class="lbl">20 jul · 06h05</span>AEP → IGR · FO5102 · Direto 1h50 · Chega 07h55</div>
+  </div>
+  <div class="card"><h3>Segurança</h3>
+    <div class="i-row"><span class="lbl">La Boca</span>Só de manhã · Caminito e Av. Pedro de Mendoza · saiam até 12h</div>
+    <div class="i-row"><span class="lbl">San Telmo</span>Evitem ruas laterais à noite · fiquem na Defensa</div>
+    <div class="i-row"><span class="lbl">Transporte</span>Cabify ou Uber sempre · nunca táxi avulso em aeroportos</div>
+    <div class="i-row"><span class="lbl">AEP vs EZE</span>Aeroportos diferentes · confirme o voo antes de chamar carro</div>
+  </div>
+  <div class="card"><h3>Dicas rápidas</h3>
+    <div class="i-row"><span class="lbl">Moeda BA</span>Pesos argentinos · Wise ou casas de câmbio locais</div>
+    <div class="i-row"><span class="lbl">Subte</span>Cartão SUBE · compre em qualquer estação ao chegar</div>
+    <div class="i-row"><span class="lbl">Clima</span>Inverno: 7–14°C · leve casaco · pode chover</div>
+    <div class="i-row"><span class="lbl">Jantares</span>Argentinos jantam depois das 21h — restaurantes ficam vazios antes disso</div>
+    <div class="i-row"><span class="lbl">Colónia</span>Passaporte obrigatório · peso uruguaio ou cartão</div>
+  </div>
+</div>
+
+<!-- DIAS -->
+<div class="pg" id="pg-d1"><div class="dh"><div class="dh-eye">Sábado, 11 de julho</div><div class="dh-h1">Campo Grande <em>→ Foz do Iguaçu</em></div><div class="dh-sub">~7h30 de estrada</div></div><div id="s-d1"></div></div>
+<div class="pg" id="pg-d2"><div class="dh"><div class="dh-eye">Domingo, 12 de julho · Foz do Iguaçu</div><div class="dh-h1"><em>Cataratas</em> + Tríplice Fronteira</div><div class="dh-sub">As quedas de manhã · fronteira à tarde</div></div><div id="s-d2"></div></div>
+<div class="pg" id="pg-d3"><div class="dh"><div class="dh-eye">Segunda, 13 de julho · Foz do Iguaçu</div><div class="dh-h1">Ciudad del Este <em>· Paraguai</em></div><div class="dh-sub">Compras · câmbio · eletrônicos</div></div><div id="s-d3"></div></div>
+<div class="pg" id="pg-d4"><div class="dh"><div class="dh-eye">Terça, 14 de julho · Transferência</div><div class="dh-h1">Manhã livre <em>→ Voo 21h40</em></div><div class="dh-sub">Foz → Buenos Aires · FO5103</div></div><div id="s-d4"></div></div>
+<div class="pg" id="pg-d5"><div class="dh"><div class="dh-eye">Quarta, 15 de julho · Centro + Puerto Madero</div><div class="dh-h1">MALBA · Jardim Japonês<br><em>Puerto Madero · Obelisco · Nivel Dios</em></div><div class="dh-sub">MALBA com 50% de desconto só às quartas</div></div><div id="s-d5"></div></div>
+<div class="pg" id="pg-d6"><div class="dh"><div class="dh-eye">Quinta, 16 de julho · Recoleta completa</div><div class="dh-h1">Floralis · El Ateneo · Recoleta<br><em>Teatro Colón · Show de Tango</em></div><div class="dh-sub">O dia mais cultural da viagem</div></div><div id="s-d6"></div></div>
+<div class="pg" id="pg-d7"><div class="dh"><div class="dh-eye">Sexta, 17 de julho · Uruguai</div><div class="dh-h1"><em>Colónia del Sacramento</em></div><div class="dh-sub">Dia inteiro fora · passaporte obrigatório</div></div><div id="s-d7"></div></div>
+<div class="pg" id="pg-d8"><div class="dh"><div class="dh-eye">Sábado, 18 de julho · Excursão</div><div class="dh-h1"><em>Tigre</em> · Delta do Paraná</div><div class="dh-sub">Dia inteiro nas ilhas</div></div><div id="s-d8"></div></div>
+<div class="pg" id="pg-d9"><div class="dh"><div class="dh-eye">Domingo, 19 de julho</div><div class="dh-h1">La Boca · Palermo · Caballito<br><em>Feria San Telmo · Última noite</em></div><div class="dh-sub">Tudo que só acontece no domingo</div></div><div id="s-d9"></div></div>
+<div class="pg" id="pg-d10"><div class="dh"><div class="dh-eye">Segunda, 20 de julho · Retorno</div><div class="dh-h1">Buenos Aires <em>→ Foz → Campo Grande</em></div><div class="dh-sub">Voo 06h05 de AEP</div></div><div id="s-d10"></div></div>
+<div class="pg" id="pg-d11"><div class="dh"><div class="dh-eye">Terça, 21 de julho</div><div class="dh-h1">Chegada em <em>Campo Grande</em></div><div class="dh-sub">~7h de estrada de Foz</div></div><div id="s-d11"></div></div>
+
+<!-- GASTOS -->
+<div class="pg" id="pg-gastos">
+  <div class="dh"><div class="dh-eye">Mapeamento financeiro</div><div class="dh-h1">Todos os <em>gastos</em></div><div class="dh-sub">Ingressos confirmados + estimativas de alimentação e transporte</div></div>
+
+  <div class="card"><h3>Ingressos e passeios — por pessoa</h3>
+    <table class="ct"><thead><tr><th>Item</th><th>Dia</th><th>/pessoa</th></tr></thead><tbody>
+      <tr class="sep"><td colspan="3">Foz do Iguaçu</td></tr>
+      <tr><td>Cataratas do Iguaçu (BR)</td><td>12 jul</td><td>R$ 131</td></tr>
+      <tr class="sep"><td colspan="3">Buenos Aires — ingressos pagos</td></tr>
+      <tr><td>MALBA (50% desc. quarta)</td><td>15 jul</td><td>~R$ 45</td></tr>
+      <tr><td>Jardim Japonês</td><td>15 jul</td><td>~R$ 50</td></tr>
+      <tr><td>Teatro Colón (visita guiada)</td><td>16 jul</td><td>~R$ 90</td></tr>
+      <tr><td>Show de Tango — El Querandí</td><td>16 jul</td><td>~R$ 370</td></tr>
+      <tr><td>Nivel Dios (consumição mín.)</td><td>15 jul</td><td>~R$ 80</td></tr>
+      <tr><td>Buquebus day-tour Colónia</td><td>17 jul</td><td>~R$ 350</td></tr>
+      <tr><td>Trem Mitre → Tigre (ida+volta)</td><td>19 jul</td><td>~R$ 3</td></tr>
+      <tr class="sep"><td colspan="3">Buenos Aires — gratuitos</td></tr>
+      <tr class="free"><td>Puerto Madero + Ponte de La Mujer</td><td>15 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>Palacio Libertad</td><td>15 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>Casa Rosada + Plaza de Mayo</td><td>15 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>Obelisco + Av. 9 de Julho</td><td>15 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>Floralis Genérica</td><td>16 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>Museu Nacional de Belas Artes</td><td>16 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>El Ateneo Grand Splendid</td><td>16 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>Cemitério da Recoleta</td><td>16 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>Jardim Botânico</td><td>19 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>Ecoparque</td><td>19 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>Mercado de Las Pulgas</td><td>19 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>Tranvia Histórico Caballito</td><td>19 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>Feria de San Telmo</td><td>19 jul</td><td>Grátis</td></tr>
+      <tr class="free"><td>La Boca + Caminito</td><td>19 jul</td><td>Grátis</td></tr>
+      <tr class="tot"><td colspan="2">Subtotal ingressos/passeios</td><td>~R$ 1.119</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="card"><h3>Alimentação — estimativa por pessoa</h3>
+    <table class="ct"><thead><tr><th>Refeição</th><th>Estimativa/dia</th><th>Dias</th><th>Total</th></tr></thead><tbody>
+      <tr><td>Foz do Iguaçu (3 dias)</td><td>R$ 80</td><td>3</td><td>R$ 240</td></tr>
+      <tr><td>Buenos Aires (5 dias)</td><td>R$ 120</td><td>5</td><td>R$ 600</td></tr>
+      <tr><td>Colónia (almoço)</td><td>R$ 100</td><td>1</td><td>R$ 100</td></tr>
+      <tr><td>Jantar especial (El Querandí incluso)</td><td>—</td><td>—</td><td>no ingresso</td></tr>
+      <tr class="tot"><td colspan="3">Subtotal alimentação</td><td>~R$ 940</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="card"><h3>Transporte — por pessoa</h3>
+    <table class="ct"><tbody>
+      <tr><td>Cabify/Uber em Buenos Aires (estimativa)</td><td>5 dias</td><td>~R$ 200</td></tr>
+      <tr><td>Subte/ônibus Buenos Aires</td><td>5 dias</td><td>~R$ 30</td></tr>
+      <tr><td>Cabify EZE → Palermo (chegada)</td><td>1x</td><td>~R$ 120</td></tr>
+      <tr><td>Cabify Palermo → AEP (saída)</td><td>1x</td><td>~R$ 20</td></tr>
+      <tr><td>Ônibus Foz (cidade/cataratas)</td><td>—</td><td>~R$ 30</td></tr>
+      <tr class="tot"><td colspan="2">Subtotal transporte</td><td>~R$ 400</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="card"><h3>Ciudad del Este — compras (isenção aduaneira)</h3>
+    <table class="ct"><tbody>
+      <tr><td>Limite por pessoa (sem declarar)</td><td></td><td>USD 300</td></tr>
+      <tr><td>Para 4 pessoas (total do grupo)</td><td></td><td>USD 1.200</td></tr>
+      <tr><td>Acima disso</td><td>50% de imposto</td><td>declarar RFB</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="card"><h3>Resumo geral — por pessoa</h3>
+    <table class="ct"><tbody>
+      <tr><td>Ingressos e passeios</td><td></td><td>~R$ 1.119</td></tr>
+      <tr><td>Alimentação</td><td></td><td>~R$ 940</td></tr>
+      <tr><td>Transporte local</td><td></td><td>~R$ 400</td></tr>
+      <tr class="tot"><td colspan="2">TOTAL ESTIMADO / PESSOA</td><td>~R$ 2.459</td></tr>
+      <tr class="tot"><td colspan="2">TOTAL 4 PESSOAS</td><td>~R$ 9.836</td></tr>
+    </tbody></table>
+    <div style="font-size:11px;color:var(--ink3);margin-top:8px;line-height:1.6">Não inclui: hospedagem, passagens aéreas, compras em CDE e Colónia, gorjetas e gastos pessoais. El Ateneo tour guiado (~R$ 120) é opcional e não está no total.</div>
+  </div>
+</div>
+
+<!-- LINKS -->
+<div class="pg" id="pg-links">
+  <div class="dh"><div class="dh-eye">Reservas online</div><div class="dh-h1">Links <em>oficiais</em></div></div>
+  <div class="card"><h3>Foz do Iguaçu</h3>
+    <div class="l-row"><span>Cataratas BR<span class="badge-r">comprar antes</span></span><a class="l-a" href="https://cataratasdoiguacu.com.br" target="_blank">cataratasdoiguacu.com.br</a></div>
+  </div>
+  <div class="card"><h3>Colónia del Sacramento</h3>
+    <div class="l-row"><span>Buquebus day-tour<span class="badge-r">reservar antes</span></span><a class="l-a" href="https://www.buquebus.com" target="_blank">buquebus.com</a></div>
+  </div>
+  <div class="card"><h3>Buenos Aires</h3>
+    <div class="l-row"><span>Teatro Colón<span class="badge-r">reservar antes</span></span><a class="l-a" href="https://teatrocolon.org.ar" target="_blank">teatrocolon.org.ar</a></div>
+    <div class="l-row"><span>MALBA</span><a class="l-a" href="https://malba.org.ar" target="_blank">malba.org.ar</a></div>
+    <div class="l-row"><span>El Querandí (tango)<span class="badge-r">reservar antes</span></span><a class="l-a" href="https://querandi.com.ar" target="_blank">querandi.com.ar</a></div>
+    <div class="l-row"><span>El Ateneo (experiência)</span><a class="l-a" href="https://www.passline.com/eventos/experiencia-grand-splendid" target="_blank">passline.com</a></div>
+    <div class="l-row"><span>Nivel Dios</span><a class="l-a" href="https://niveldios.ar" target="_blank">niveldios.ar</a></div>
+    <div class="l-row"><span>Transfer EZE → cidade</span><a class="l-a" href="https://www.mandelbus.com" target="_blank">mandelbus.com</a></div>
+    <div class="l-row"><span>Subte (SUBE)</span><a class="l-a" href="https://www.metrovias.com.ar" target="_blank">metrovias.com.ar</a></div>
+    <div class="l-row"><span>Trem Mitre → Tigre</span><a class="l-a" href="https://www.trenes.gob.ar" target="_blank">trenes.gob.ar</a></div>
+  </div>
+</div>
+
+<!-- TODO -->
+<div class="pg" id="pg-todo">
+  <div class="dh"><div class="dh-eye">Checklist pré-viagem</div><div class="dh-h1">O que <em>comprar e reservar</em></div></div>
+  <div class="card"><h3>Urgente — faça agora <span class="urgency urg-now">antes de julho</span></h3>
+    <div class="todo-item"><button class="todo-chk" data-tid="t1"></button><div><div class="todo-name">Cataratas BR — 4 ingressos</div><div class="todo-detail">cataratasdoiguacu.com.br · Dia 12 jul (dom) · R$ 131/pessoa</div></div></div>
+    <div class="todo-item"><button class="todo-chk" data-tid="t2"></button><div><div class="todo-name">Teatro Colón — 4 ingressos visita guiada</div><div class="todo-detail">teatrocolon.org.ar · 16 jul (qui) · tour português às 16h · ~R$ 90/pessoa</div></div></div>
+    <div class="todo-item"><button class="todo-chk" data-tid="t3"></button><div><div class="todo-name">Buquebus day-tour Colónia — 4 passagens</div><div class="todo-detail">buquebus.com · 17 jul (sex) · saída 8h · ~R$ 350/pessoa</div></div></div>
+    <div class="todo-item"><button class="todo-chk" data-tid="t4"></button><div><div class="todo-name">El Querandí — 4 ingressos show de tango</div><div class="todo-detail">querandi.com.ar · 16 jul (qui) · noite · ~R$ 370/pessoa</div></div></div>
+  </div>
+  <div class="card"><h3>Com antecedência <span class="urgency urg-soon">antes de embarcar</span></h3>
+    <div class="todo-item"><button class="todo-chk" data-tid="t5"></button><div><div class="todo-name">Seguro viagem — obrigatório na Argentina desde 2024</div><div class="todo-detail">Exigência legal para entrada no país</div></div></div>
+    <div class="todo-item"><button class="todo-chk" data-tid="t6"></button><div><div class="todo-name">Verificar passaporte dos 4</div><div class="todo-detail">Necessário para Colónia del Sacramento (Uruguai)</div></div></div>
+    <div class="todo-item"><button class="todo-chk" data-tid="t7"></button><div><div class="todo-name">Estratégia de câmbio para pesos argentinos</div><div class="todo-detail">Use Wise ou casas de câmbio locais em BA · câmbio bancário é ruim</div></div></div>
+  </div>
+  <div class="card"><h3>Na mala <span class="urgency urg-trip">não esqueça</span></h3>
+    <div class="todo-item"><button class="todo-chk" data-tid="t8"></button><div><div class="todo-name">Capa de chuva leve</div><div class="todo-detail">Essencial para as Cataratas · o spray molha de verdade</div></div></div>
+    <div class="todo-item"><button class="todo-chk" data-tid="t9"></button><div><div class="todo-name">Casaco para Buenos Aires</div><div class="todo-detail">Julho é inverno · 7–14°C · faz frio à noite</div></div></div>
+    <div class="todo-item"><button class="todo-chk" data-tid="t10"></button><div><div class="todo-name">Sapato confortável para caminhar</div><div class="todo-detail">Vários dias com 8–15km a pé</div></div></div>
+    <div class="todo-item"><button class="todo-chk" data-tid="t11"></button><div><div class="todo-name">Power bank carregado</div><div class="todo-detail">Dias longos com Maps, câmera e Cabify</div></div></div>
+    <div class="todo-item"><button class="todo-chk" data-tid="t12"></button><div><div class="todo-name">Adaptador de tomada universal</div><div class="todo-detail">Argentina pode ter padrão diferente</div></div></div>
+  </div>
+</div>
+
+<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Voltar ao topo">↑</button>
+
+<script>
+// Fotos por URL — carregam no GitHub Pages normalmente
+const PHOTOS={
+  cataratas:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cataratas_do_Igua%C3%A7u_-_2015-07-06_-_panorama.jpg/1280px-Cataratas_do_Igua%C3%A7u_-_2015-07-06_-_panorama.jpg',
+  triplice:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Tiple_frontera_foz_do_iguacu.jpg/1280px-Tiple_frontera_foz_do_iguacu.jpg',
+  cde:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ciudad_del_Este.jpg/1280px-Ciudad_del_Este.jpg',
+  malba:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/MALBA_Buenos_Aires.jpg/1280px-MALBA_Buenos_Aires.jpg',
+  jardim_japones:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Jard%C3%ADn_Japon%C3%A9s_de_Buenos_Aires_-_DSC04271.jpg/1280px-Jard%C3%ADn_Japon%C3%A9s_de_Buenos_Aires_-_DSC04271.jpg',
+  puerto_madero:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Puerto_Madero_-_Puente_de_la_Mujer.jpg/1280px-Puerto_Madero_-_Puente_de_la_Mujer.jpg',
+  obelisco:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Buenos_Aires_-_Obelisco_-_2008-12-31.jpg/800px-Buenos_Aires_-_Obelisco_-_2008-12-31.jpg',
+  casa_rosada:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Buenos_Aires_Casa_Rosada_2.jpg/1280px-Buenos_Aires_Casa_Rosada_2.jpg',
+  floralis:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Floralis_Generica_Buenosaires.jpg/1280px-Floralis_Generica_Buenosaires.jpg',
+  ateneo:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Buenos_Aires_-_El_Ateneo_Grand_Splendid_-_5.jpg/1280px-Buenos_Aires_-_El_Ateneo_Grand_Splendid_-_5.jpg',
+  recoleta:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Cementerio_de_la_Recoleta_%28Buenos_Aires%29.jpg/1280px-Cementerio_de_la_Recoleta_%28Buenos_Aires%29.jpg',
+  teatro_colon:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Teatro_Col%C3%B3n_2.jpg/1280px-Teatro_Col%C3%B3n_2.jpg',
+  tango:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Tango_in_BA.jpg/1280px-Tango_in_BA.jpg',
+  colonia:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Colonia_del_Sacramento_historic_quarter.jpg/1280px-Colonia_del_Sacramento_historic_quarter.jpg',
+  tigre:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Tigre_rio_Lujan.jpg/1280px-Tigre_rio_Lujan.jpg',
+  caminito:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Caminito_street_Buenos_Aires.jpg/1280px-Caminito_street_Buenos_Aires.jpg',
+  palermo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Palermo_Soho%2C_Buenos_Aires%2C_Argentina.jpg/1280px-Palermo_Soho%2C_Buenos_Aires%2C_Argentina.jpg',
+  san_telmo:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Feria_de_san_telmo_buenos_aires.jpg/1280px-Feria_de_san_telmo_buenos_aires.jpg',
+};
+
+const SPOTS={
+d1:[
+  {id:'d1a',period:'manhã',pdot:'#888',name:'Saída de Campo Grande',photo:null,meta:'BR-163 Sul → PR-182 → Foz · ~7h30',desc:'Saiam antes das 7h. A BR-163 tem trechos paralelos ao Rio Paraná com visual bonito.',tags:[],tip:'Pare para fotografar às margens do Paraná antes de chegar a Foz.',warn:null,danger:null,trans:null},
+  {id:'d1b',period:'chegada',pdot:'#888',name:'Check-in · Av. dos Imigrantes, 522',photo:null,meta:'Apto 204 · piscina',desc:'15min das Cataratas. Deixem as malas e aproveitem o restante da tarde.',tags:[],tip:null,warn:null,danger:null,trans:null},
+  {id:'d1c',period:'noite',pdot:'#444',name:'Jantar no Porto Meira',photo:null,meta:'Bairro à beira do Rio Iguaçu',desc:'Peça peixe dourado ou pintado frescos. Vá no que tiver mais movimento de locais.',tags:['Moderado'],tip:'Chegue antes das 20h — a maioria fecha às 22h.',warn:null,danger:null,trans:null}
+],
+d2:[
+  {id:'d2a',period:'manhã · 09h',pdot:'#F9A825',name:'Parque Nacional do Iguaçu',photo:'cataratas',meta:'Trilha das Cataratas · 275 quedas · 1,2km',desc:'A melhor vista panorâmica das Cataratas do mundo para fotografia. O spray molha a partir dos mirantes intermediários. A Garganta do Diabo é o ponto final — impactante.',tags:['R$ 131/pessoa','Online: cataratasdoiguacu.com.br','Crianças até 6 anos grátis'],tip:'Melhor luz às 9h em ponto. Capa de chuva leve e sapato fechado são obrigatórios.',warn:'Ingresso apenas online com antecedência — limite de vagas por dia.',danger:null,trans:'🚗 BR-469 km 18 · 🚌 Linha 120 do Terminal Urbano · ~R$ 5'},
+  {id:'d2b',period:'tarde · 14h',pdot:'#F9A825',name:'Tríplice Fronteira',photo:'triplice',meta:'Marco das três fronteiras · Brasil · Argentina · Paraguai',desc:'O ponto onde se encontram os rios Iguaçu e Paraná, na divisa de Brasil, Argentina e Paraguai. O marco brasileiro fica na Av. Beira Rio — vista direta para os marcos argentino e paraguaio do outro lado. Ótimo para fotos ao entardecer.',tags:['Grátis','Av. Beira Rio, Foz do Iguaçu'],tip:'Chegue antes das 17h para pegar a luz do fim da tarde sobre os rios. O mirante é ao ar livre e não tem ingresso.',warn:null,danger:null,trans:'🚗 ~15min do apart. · 🚌 Ônibus linha 110 do Terminal Urbano'}
+],
+d3:[
+  {id:'d3a',period:'dia todo',pdot:'#F9A825',name:'Ciudad del Este · Paraguai',photo:'cde',meta:'Eletrônicos · perfumes · câmeras · bebidas',desc:'Eletrônicos, perfumes importados, câmeras, óculos e bebidas com preços bem abaixo do Brasil. Shopping China para eletrônicos, Monalisa para perfumes e cosméticos.',tags:['Livre','USD 300/pessoa de isenção'],tip:'Pesquise os preços no Brasil antes de ir. Câmbio: use casas de câmbio dentro da ciudad.',warn:'Limite de isenção aduaneira: USD 300/pessoa. Para 4 pessoas: USD 1.200 no total sem declarar.',danger:null,trans:'🚗 BR-277 → Ponte da Amizade · 🚌 Ônibus do Terminal Urbano de Foz'}
+],
+d4:[
+  {id:'d4a',period:'manhã livre',pdot:'#F9A825',name:'Manhã em Foz',photo:null,meta:'Descanso ou última visita',desc:'Tempo livre para compras de última hora, revisitar algum ponto ou simplesmente descansar antes do voo noturno.',tags:[],tip:null,warn:null,danger:null,trans:null},
+  {id:'d4b',period:'noite · 21h40',pdot:'#888',name:'Voo IGR → EZE · FO5103',photo:null,meta:'Direto 1h55 · Chegada 23h35 em Ezeiza',desc:'Cheguem ao aeroporto às 19h30. De EZE até Palermo são ~45km, ~1h. Use o balcão MandelBus ou Cabify — nunca os táxis de abordagem.',tags:['Chegar ao IGR às 19h30'],tip:null,warn:'Em Ezeiza: use balcão credenciado ou Cabify. Nunca táxis de abordagem no terminal.',danger:null,trans:'🚕 EZE → Palermo: Cabify ou MandelBus · ~1h · ~R$ 120'}
+],
+d5:[
+  {id:'d5a',period:'manhã · 10h30',pdot:'#F9A825',name:'MALBA',photo:'malba',meta:'Av. Figueroa Alcorta 3415 · Palermo',desc:'Tarsila do Amaral, Frida Kahlo, Diego Rivera, Xul Solar. Abra às 11h às quartas — chegue cedo para entrar na abertura sem fila.',tags:['50% desconto só na quarta · ~R$ 45','Subte D → Scalabrini Ortiz'],tip:'A sala de Tarsila do Amaral no 2º andar é o destaque. Não pule.',warn:null,danger:null,trans:'🚇 Subte D, estação Scalabrini Ortiz · 5min a pé'},
+  {id:'d5b',period:'manhã · 12h',pdot:'#F9A825',name:'Jardim Japonês',photo:'jardim_japones',meta:'A 8min a pé do MALBA · Av. Casares 2966',desc:'Lagos, pontes, carpas gigantes e bonsais. Um dos lugares mais fotogênicos de Palermo.',tags:['~R$ 50/pessoa','10h–18h45 todos os dias'],tip:'Da ponte Taiko-bashi olhando para os lagos — melhor ângulo para foto.',warn:null,danger:null,trans:'🚶 8min a pé do MALBA'},
+  {id:'d5c',period:'tarde · 14h',pdot:'#1A4A8A',name:'Puerto Madero + Ponte de La Mujer',photo:'puerto_madero',meta:'Bairro novo à beira do Río de la Plata',desc:'A Ponte de La Mujer (Santiago Calatrava, 2001) tem 170m e forma uma escultura sobre o cais. Caminhem pelo Puerto Madero com vista para o Centro histórico.',tags:['Grátis','Subte B → Alem + 10min a pé'],tip:'À tarde o sol reflete nos edifícios de vidro — boa luz para fotos.',warn:null,danger:null,trans:'🚇 Subte D → Catedral → Subte B → Alem · ~20min'},
+  {id:'d5d',period:'tarde · 16h',pdot:'#1A4A8A',name:'Palacio Libertad + Casa Rosada + Obelisco',photo:'casa_rosada',meta:'Sarmiento 151 → Plaza de Mayo → Av. 9 de Julho',desc:'Palacio Libertad (ex-CCK): maior centro cultural da América Latina, gratuito, tour noturno 9º andar às 19h. Depois: Casa Rosada com iluminação rosa à noite + Obelisco com luzes dos carros na 9 de Julho.',tags:['Grátis','Tudo a pé em sequência'],tip:'Tour 9º andar do Palacio Libertad: retire ingresso na bilheteria às 18h. Gratuito, limite 2 por pessoa.',warn:null,danger:null,trans:'🚶 5min de Puerto Madero'},
+  {id:'d5e',period:'noite · 21h',pdot:'#444',name:'Nivel Dios Selfie Bar',photo:null,meta:'San Martín 678, Microcentro · até 1h da manhã',desc:'O primeiro selfie bar da Argentina com 20 cenários temáticos: avião privado, Mona Lisa, Os Simpsons, cofre de banco. Coquetéis autorais, entrada livre com consumição.',tags:['~R$ 80/pessoa em consumição','10min de Cabify do Obelisco'],tip:'O Llamarada Homero é o coquetel mais pedido. Vão todos juntos para aproveitar os cenários.',warn:null,danger:null,trans:'🚕 Cabify do Obelisco: 5min'}
+],
+d6:[
+  {id:'d6a',period:'manhã · 09h',pdot:'#F9A825',name:'Floralis Genérica + Museu de Belas Artes',photo:'floralis',meta:'Plaza Naciones Unidas + Av. Libertador',desc:'Floralis Genérica: flor de aço de 23m com pétalas abertas ao amanhecer. O espelho d\'água dá o melhor ângulo. Museu de Belas Artes a 7min a pé: gratuito, Monet, Degas e arte latino-americana.',tags:['Grátis','Chegue às 9h'],tip:'De Palermo: Cabify direto ~15min ou Subte D → Callao + 15min a pé.',warn:null,danger:null,trans:'🚇 Subte D → Callao ou 🚕 Cabify direto'},
+  {id:'d6b',period:'manhã · 11h',pdot:'#F9A825',name:'El Ateneo Grand Splendid',photo:'ateneo',meta:'Av. Santa Fe 1860 · 10min a pé do Museu',desc:'Teatro de 1919 virado livraria: camarotes de veludo viram estantes, o palco virou café. Peça um café sentado no palco — a experiência é parte do lugar.',tags:['Grátis (livraria)','Tour guiado 3º andar: ~R$ 120 · opcional'],tip:'Antes das 12h para a luz da cúpula. Melhor ângulo: do fundo olhando para o palco-café.',warn:'Superlotado depois das 13h.',danger:null,trans:'🚶 10min a pé do Museu de Belas Artes'},
+  {id:'d6c',period:'tarde · 12h30',pdot:'#1A4A8A',name:'Cemitério da Recoleta',photo:'recoleta',meta:'Próximo ao El Ateneo · 10min a pé',desc:'6.400 mausoléus. Evita Perón no Corredor 7 (mapa com QR na entrada). Perca-se pelos corredores laterais — detalhes de arquitetura mais ricos que os mausoléus famosos.',tags:['Grátis','7h–17h30'],tip:null,warn:null,danger:null,trans:'🚶 10min a pé do El Ateneo'},
+  {id:'d6d',period:'tarde · 15h',pdot:'#1A4A8A',name:'Teatro Colón',photo:'teatro_colon',meta:'Tucumán 1171 · tour em português às 16h',desc:'Um dos 5 maiores teatros do mundo. Caruso, Callas e Pavarotti cantaram aqui. A visita guiada mostra o interior dourado, os camarotes e as oficinas de figurinos.',tags:['~R$ 90/pessoa','Reservar em teatrocolon.org.ar','Subte D → Tribunales'],tip:'A visita das 16h é menos cheia que a das 13h. De Recoleta: Subte D, 3 paradas.',warn:'Reserve com antecedência — esgota em julho.',danger:null,trans:'🚇 Subte D → Tribunales · ~10min de Recoleta'},
+  {id:'d6e',period:'noite · 21h',pdot:'#444',name:'Show de Tango · El Querandí',photo:'tango',meta:'Casarão de 1920 em San Telmo · transfer de Palermo incluso',desc:'O show mais tradicional e respeitado de Buenos Aires. Cinco casais, orquestra ao vivo e dois cantores. Jornada pela história do tango. Transfer incluso de/para Palermo.',tags:['~R$ 370/pessoa (só show)','Transfer de/para Palermo incluso','Reserve em querandi.com.ar'],tip:'Reservem com semanas de antecedência. Cheguem com roupa elegante ou smart casual.',warn:null,danger:null,trans:'Transfer incluso no ingresso · saída de Palermo ~20h30'}
+],
+d7:[
+  {id:'d7a',period:'manhã · 07h',pdot:'#2D6A4F',name:'Buquebus → Colónia del Sacramento',photo:'colonia',meta:'Terminal Puerto Madero → Uruguai · 1h15',desc:'Barco rápido pelo Rio da Prata. Fique no andar de baixo para desembarcar primeiro. Chegada às 9h15.',tags:['~R$ 350/pessoa · buquebus.com','Passaporte obrigatório','Saiam às 6h15 do apart.'],tip:'Chegue ao terminal às 6h45. Imigração demora.',warn:null,danger:null,trans:'🚕 Cabify de Palermo ao terminal: ~20min'},
+  {id:'d7b',period:'dia · 09h30–16h30',pdot:'#2D6A4F',name:'Colónia del Sacramento',photo:null,meta:'Patrimônio UNESCO · 1680 · Rua dos Suspiros',desc:'Portão histórico, Farol com vista 360°, Ruínas San Francisco, Praça Mayor. A Rua dos Suspiros (Calle de los Suspiros) é a mais fotogênica — calçamento de pedra, sem carros. Almoço na Rua Del Comercio: peça o chivito, o prato nacional do Uruguai.',tags:['Grátis caminhar','Farol: ingresso simbólico','Pesos uruguaios ou cartão'],tip:'A cidade inteira é walkable em ~2km. Vá sem pressa.',warn:'Pesos argentinos geralmente não são aceitos nos restaurantes.',danger:null,trans:'🚶 12min do terminal ao centro histórico'},
+  {id:'d7c',period:'retorno · 17h',pdot:'#888',name:'Barco de volta → Buenos Aires',photo:null,meta:'Chegada ~18h15',desc:'Chegam com tempo para jantar e descansar antes do Tigre no sábado.',tags:['Incluso no day-tour'],tip:null,warn:null,danger:null,trans:null}
+],
+d8:[
+  {id:'d8a',period:'manhã · 08h30',pdot:'#888',name:'Trem Mitre → Tigre',photo:null,meta:'Palermo → Retiro → Tigre · ~1h20 total',desc:'Subte D até Catedral (6 paradas), depois C até Retiro. Na estação Retiro siga "Trenes" para a plataforma Mitre-Tigre. Direto em ~50min.',tags:['Cartão SUBE · ~R$ 3','Saídas a cada 15–20min'],tip:'Compre o SUBE nas máquinas da estação. R$ 20 em pesos serve para o dia todo.',warn:null,danger:null,trans:'🚇 Subte D → Catedral → Subte C → Retiro → Trem Mitre'},
+  {id:'d8b',period:'dia · 10h30–17h',pdot:'#2D6A4F',name:'Delta do Paraná · Tigre',photo:'tigre',meta:'Lanchas coletivas · canais · ilhas',desc:'As lanchas param em vários pontos entre as ilhas. Desembarcam onde quiserem — toquem a campainha no cais para chamar a próxima. O primeiro trecho tem os canais mais estreitos e fotogênicos. Peça o surubí ao horno (peixe do Delta) no almoço.',tags:['~R$ 5–10 por trecho','Compra presencial','Leve pesos em espécie'],tip:'Restaurantes nas ilhas: leve dinheiro em pesos — nem todos aceitam cartão.',warn:null,danger:null,trans:'🚢 Lanchas coletivas da Estação Fluvial de Tigre'},
+  {id:'d8c',period:'noite',pdot:'#444',name:'Retorno + noite em Palermo',photo:null,meta:'Chegada ~19h30',desc:'Noite livre. Frank\'s Bar (Arce 866 — porta é uma cabine telefônica) para quem tiver energia.',tags:['A pé do apart.'],tip:'Frank\'s Bar não tem placa. A cabine telefônica na Arce 866 gira para abrir. Chegue depois das 22h.',warn:null,danger:null,trans:'🚂 Trem Mitre: Tigre → Retiro · ~50min'}
+],
+d9:[
+  {id:'d9a',period:'manhã · 09h',pdot:'#F9A825',name:'La Boca + Caminito',photo:'caminito',meta:'Domingo de manhã — com luz e segurança',desc:'Domingo às 9h é o melhor momento: luz do dia, poucas pessoas, dançarinos de tango já trabalhando. Mirantes no 2º andar dos museus dão vista de cima sem multidão.',tags:['Grátis','Saiam até 12h'],tip:'Fotografem do alto da varanda do Museu Quinquela Martín — vista de cima é muito melhor que a da calçada.',warn:null,danger:'Fiquem APENAS na Rua Caminito e Av. Pedro de Mendoza. Não entrem em ruas laterais.',trans:'🚕 Cabify de Palermo: ~25min'},
+  {id:'d9b',period:'manhã · 11h',pdot:'#F9A825',name:'Jardim Botânico + Ecoparque',photo:null,meta:'A 10min a pé do apart. · Av. Santa Fe 3951',desc:'Jardim Botânico: 5.000 espécies e os gatos famosos do jardim (dezenas deles, dóceis). Ecoparque ao lado: fauna nativa dos pampas solta — pavões, garças e lebres.',tags:['Grátis','Abre às 9h30 (Botânico) e 11h (Eco)'],tip:'Os gatos do Botânico são uma atração à parte — leve tempo para sentar e observar.',warn:null,danger:null,trans:'🚕 Cabify de La Boca: ~20min · ou 🚶 10min a pé do apart.'},
+  {id:'d9c',period:'tarde · 14h30',pdot:'#1A4A8A',name:'Tranvia Histórico de Caballito',photo:null,meta:'Emilio Mitre 500 · domingo: 15h–18h',desc:'O único bondinho histórico em funcionamento na América do Sul. Passeio gratuito de 20min pelas ruas de Caballito em vagões dos anos 1920.',tags:['Grátis','Chegue às 14h45'],tip:'Forme fila com antecedência — muito disputado aos domingos.',warn:null,danger:null,trans:'🚇 Subte D → Medrano → Subte A → Primera Junta · ~20min'},
+  {id:'d9d',period:'tarde · 16h',pdot:'#1A4A8A',name:'Feria de San Telmo + Mercado',photo:'san_telmo',meta:'Calle Defensa · só domingos 10h–17h',desc:'10 quadras de antiguidades, artesanato e arte de rua. Tango ao vivo na Plaza Dorrego a partir das 15h. Mercado interior (1897) com empanadas e vinhos.',tags:['Grátis','Só domingos 10h–17h'],tip:'Às 16h o pico passou e você ainda pega tudo funcionando — tango na rua e barracas abertas.',warn:null,danger:null,trans:'🚇 Subte A → Plaza de Mayo + 10min a pé · ou 🚕 Cabify de Caballito'},
+  {id:'d9e',period:'noite · 20h30',pdot:'#444',name:'Jantar de despedida em Palermo',photo:'palermo',meta:'El Preferido · Borges com Guatemala',desc:'Bodegón clássico desde 1952. Sem frescura, porções generosas, carne boa. Cheguem às 20h — fila começa às 21h. Depois: última noite nos bares de Palermo.',tags:['A pé do apart.','Moderado'],tip:'Se El Preferido estiver cheio: Chori (Armenia) ou qualquer bodegón no caminho.',warn:null,danger:null,trans:'🚶 A pé do apart. em Gorriti'}
+],
+d10:[
+  {id:'d10a',period:'madrugada · 04h30',pdot:'#888',name:'Voo AEP → IGR · FO5102',photo:null,meta:'Aeroparque Jorge Newbery · 10min de Cabify',desc:'Deixem as malas prontas na noite anterior. Voo às 6h05, direto em 1h50. Chegada em Foz às 7h55. Retornam de carro para Campo Grande pela PR-182 + BR-163.',tags:['AEP — não é Ezeiza','Saiam do apart. às 04h30'],tip:'AEP fica em Palermo, praticamente na porta do apart.',warn:'AEP e EZE são aeroportos diferentes. Confirme no ticket antes de chamar o carro.',danger:null,trans:'🚕 Cabify de Palermo: ~10min · ~R$ 20 em pesos'}
+],
+d11:[
+  {id:'d11a',period:'dia todo',pdot:'#888',name:'Retorno a Campo Grande',photo:null,meta:'PR-182 + BR-163 · ~7h30 de estrada',desc:'Saindo de Foz às 9h, chegam a Campo Grande entre 16h e 17h. Mesma rota da ida.',tags:[],tip:null,warn:null,danger:null,trans:null}
+]
+};
+
+const OV={
+  d1:{date:'11 jul',label:'CG → Foz',c:'#888'},
+  d2:{date:'12 jul',label:'Cataratas + Tríplice',c:'#2D6A4F'},
+  d3:{date:'13 jul',label:'Ciudad del Este',c:'#2D6A4F'},
+  d4:{date:'14 jul',label:'Voo → Buenos Aires',c:'#888'},
+  d5:{date:'15 jul',label:'MALBA · Puerto Madero · Obelisco · Nivel Dios',c:'#1A4A8A'},
+  d6:{date:'16 jul',label:'Recoleta · Colón · Tango',c:'#1A4A8A'},
+  d7:{date:'17 jul',label:'Colónia del Sacramento',c:'#2D6A4F'},
+  d8:{date:'18 jul',label:'Tigre · Delta',c:'#2D6A4F'},
+  d9:{date:'19 jul',label:'La Boca · Palermo · Caballito · San Telmo',c:'#1A4A8A'},
+  d10:{date:'20 jul',label:'Voo → Foz',c:'#888'},
+  d11:{date:'21 jul',label:'Retorno a CG',c:'#888'},
+};
+
+const checks=JSON.parse(localStorage.getItem('ba26v4')||'{}');
+const todos=JSON.parse(localStorage.getItem('ba26todos')||'{}');
+function save(){localStorage.setItem('ba26v4',JSON.stringify(checks))}
+function saveTodos(){localStorage.setItem('ba26todos',JSON.stringify(todos))}
+function allS(){return Object.values(SPOTS).flat()}
+function doneN(){return allS().filter(s=>checks[s.id]).length}
+
+function updProg(){
+  const pct=Math.round(doneN()/allS().length*100);
+  document.getElementById('gf').style.width=pct+'%';
+  document.getElementById('gp').textContent=pct+'%';
+  Object.keys(OV).forEach(dk=>{
+    const f=document.querySelector(`[data-df="${dk}"]`);
+    if(!f)return;
+    const s=SPOTS[dk]||[],d=s.filter(x=>checks[x.id]).length;
+    f.style.width=(s.length?Math.round(d/s.length*100):0)+'%';
+  });
+}
+
+function buildSpot(s){
+  const card=document.createElement('div');
+  card.className='place'+(checks[s.id]?' done':'');
+  card.id='pl-'+s.id;
+  if(s.photo&&PHOTOS[s.photo]){
+    const img=document.createElement('img');
+    img.className='place-photo';
+    img.src=PHOTOS[s.photo];
+    img.alt=s.name;
+    img.loading='lazy';
+    img.onerror=function(){this.style.display='none'};
+    card.appendChild(img);
+  }
+  const tags=(s.tags||[]).map(t=>{
+    const tl=t.toLowerCase();
+    let c='t-gray';
+    if(tl.includes('grát')||tl.includes('gratis')||tl.includes('free'))c='t-free';
+    else if(tl.includes('r$')||tl.includes('~r')||tl.includes('usd')||tl.includes('desc')||tl.includes('simbólico')||tl.includes('moderado'))c='t-paid';
+    else if(tl.includes('reservar')||tl.includes('comprar')||tl.includes('passap')||tl.includes('obrig'))c='t-warn';
+    return `<span class="tag ${c}">${t}</span>`;
+  }).join('');
+  const mv=s.trans?`<div class="move">🗺 ${s.trans.replace(/\n/g,' · ')}</div>`:'';
+  const tp=s.tip?`<div class="blk blk-tip"><span class="blk-lbl">Dica</span>${s.tip}</div>`:'';
+  const wn=s.warn?`<div class="blk blk-warn"><span class="blk-lbl">Atenção</span>${s.warn}</div>`:'';
+  const dg=s.danger?`<div class="blk blk-danger"><span class="blk-lbl">⚠ Segurança</span>${s.danger}</div>`:'';
+  const sv=localStorage.getItem('note_'+s.id)||'';
+  const body=document.createElement('div');
+  body.innerHTML=`
+    <div class="place-body">
+      <div class="place-top">
+        <div class="place-name">${s.name}</div>
+        <button class="chk ${checks[s.id]?'on':''}" data-id="${s.id}">✓</button>
+      </div>
+      <div class="place-meta">${s.period} · ${s.meta}</div>
+      <div class="place-desc">${s.desc}</div>
+      ${tags?`<div class="tags">${tags}</div>`:''}
+      ${mv}${tp}${wn}${dg}
+    </div>
+    <div class="notes-w">
+      <div class="notes-lbl">Notas</div>
+      <textarea placeholder="Confirmações, links, observações…" data-nid="${s.id}">${sv}</textarea>
+      <button class="save-btn" data-sid="${s.id}">Salvar</button>
+    </div>`;
+  card.appendChild(body);
+  card.querySelector('.chk').addEventListener('click',function(){
+    const id=this.dataset.id;checks[id]=!checks[id];save();
+    this.classList.toggle('on');
+    document.getElementById('pl-'+id).classList.toggle('done');
+    updProg();
+  });
+  card.querySelector('.save-btn').addEventListener('click',function(){
+    const id=this.dataset.sid,val=card.querySelector(`[data-nid="${id}"]`).value;
+    localStorage.setItem('note_'+id,val);
+    const o=this.textContent;this.textContent='Salvo ✓';setTimeout(()=>this.textContent=o,1500);
+  });
+  return card;
+}
+
+function buildPeriods(dk){
+  const spots=SPOTS[dk]||[];
+  const byP={};
+  spots.forEach(s=>{
+    if(!byP[s.period])byP[s.period]={dot:s.pdot,spots:[]};
+    byP[s.period].spots.push(s);
+  });
+  const cont=document.getElementById('s-'+dk);
+  if(!cont)return;
+  Object.entries(byP).forEach(([lbl,data])=>{
+    const wrap=document.createElement('div');
+    wrap.className='period';
+    wrap.innerHTML=`<div class="period-hdr"><div class="period-dot" style="background:${data.dot}"></div><div class="period-lbl">${lbl}</div></div>`;
+    data.spots.forEach(s=>wrap.appendChild(buildSpot(s)));
+    cont.appendChild(wrap);
+  });
+}
+
+function buildOv(){
+  const g=document.getElementById('ov-grid');
+  Object.entries(OV).forEach(([dk,m])=>{
+    const c=document.createElement('div');
+    c.className='ov-card';
+    c.innerHTML=`<div class="ov-date"><div class="ov-dot" style="background:${m.c}"></div>${m.date}</div><div class="ov-title">${m.label}</div><div class="ov-bar"><div class="ov-fill" data-df="${dk}"></div></div>`;
+    c.addEventListener('click',()=>go(dk));
+    g.appendChild(c);
+  });
+}
+
+function go(t){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  const pg=document.getElementById('pg-'+t);
+  const tb=document.querySelector(`[data-t="${t}"]`);
+  if(pg)pg.classList.add('on');
+  if(tb){tb.classList.add('on');tb.scrollIntoView({inline:'center',behavior:'smooth'});}
+  window.scrollTo(0,0);
+}
+
+// scroll top btn
+const stb=document.getElementById('scrolltop');
+window.addEventListener('scroll',()=>stb.classList.toggle('show',window.scrollY>300));
+
+// todos
+document.querySelectorAll('.todo-chk').forEach(btn=>{
+  const id=btn.dataset.tid;
+  if(todos[id]){btn.classList.add('on');btn.textContent='✓';}
+  btn.addEventListener('click',function(){
+    todos[id]=!todos[id];saveTodos();
+    this.classList.toggle('on');
+    this.textContent=todos[id]?'✓':'';
+  });
+});
+
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>go(b.dataset.t)));
+Object.keys(SPOTS).forEach(dk=>buildPeriods(dk));
+buildOv();
+updProg();
+</script>
+</body>
+</html>
